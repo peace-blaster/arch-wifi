@@ -1,0 +1,42 @@
+echo opening all hailing frequencies!
+sudo systemctl stop NetworkManager
+sudo systemctl stop wicd
+sudo pkill wpa_supplicant
+if [ $# = 0 ]; then
+  sudo ip link set wlp3s0 down
+	sudo ip link set wlp3s0 up
+	sudo ip link set wlan0 down
+	sudo ip link set wlan0 up
+	sudo ip link set eth0 down
+	sudo ip link set eth0 up
+	sudo ip link set eth1 down
+	sudo ip link set eth1 up
+	sudo ip link set eth2 down
+	sudo ip link set eth2 up
+	sudo ip link set lo down
+	sudo ip link set lo up
+	echo power down, power up!
+	echo it\'s easy, and it usually works!
+	sudo wifi-menu 
+	exit
+elif [ 'echo $1' = "help" ]; then
+	echo usage
+	echo "written for Arch Linux, though may work on systems running systemd, netcfg, wifi-menu (whatever provides that) and ip link"
+	echo the arguement should be the name of your wireless adapter, or help
+	echo if no arguement is provided, the script will reset all known adapters
+	echo
+	echo also note this uses wifi-menu and netcfg, and disables all other network management daemons via systemctl
+	echo use with caution
+	exit
+elif [ $# = 1 ]; then
+	sudo ip link set $1 down
+        sudo ip link set $1 up
+        echo power down, power up!
+        echo it\'s easy, and it usually works!
+        sudo wifi-menu
+	exit
+else
+	echo bad arguement, see networkreset help
+	exit
+fi
+exit
